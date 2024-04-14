@@ -1581,7 +1581,7 @@ void TestLevelsAliasing()
 
   for (int bin = 0; bin < num_levels - 1; bin++)
   {
-    // Each bin should contain `bin + 1` samples. Since samples also contain
+    // Each bin should contain `bin + 2` samples. Since samples also contain
     // levels, they contribute one extra item to each bin.
     AssertEquals(bin + 2, h_histogram[bin]);
   }
