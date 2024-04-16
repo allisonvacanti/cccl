@@ -37,6 +37,8 @@
 
 #include <new>
 
+#include "c2h/test_cached_allocator.cuh"
+
 // #define DEBUG_CHECKED_ALLOC_FAILURE
 
 #ifdef DEBUG_CHECKED_ALLOC_FAILURE
@@ -47,6 +49,8 @@ namespace c2h
 {
 namespace detail
 {
+
+inline test_cached_allocator g_device_mem_cache;
 
 inline cudaError_t check_free_device_memory(std::size_t bytes)
 {
@@ -93,10 +97,35 @@ inline cudaError_t checked_cuda_malloc(void** ptr, std::size_t bytes)
 
   return cudaMalloc(ptr, bytes);
 }
+
+inline cudaError_t cached_cuda_malloc(void** ptr, std::size_t bytes)
+{
+  *ptr = nullptr;
+
+  cudaError_t error = g_device_mem_cache.allocate(ptr, bytes);
+  if (error == cudaErrorMemoryAllocation)
+  {
+    return checked_cuda_malloc(ptr, bytes);
+  }
+  return error;
+}
+
+inline cudaError_t temp_free(void* ptr)
+{
+  cudaError_t error = g_device_mem_cache.deallocate(ptr);
+  if (error == cudaErrorInvalidValue)
+  {
+    return cudaFree(ptr);
+  }
+  return error;
+}
+
 } // namespace detail
 
 using checked_cuda_memory_resource =
   thrust::system::cuda::detail::cuda_memory_resource<detail::checked_cuda_malloc, cudaFree, thrust::cuda::pointer<void>>;
+// using checked_cuda_memory_resource = thrust::system::cuda::detail::
+//   cuda_memory_resource<detail::cached_cuda_malloc, detail::temp_free, thrust::cuda::pointer<void>>;
 
 template <typename T>
 class checked_cuda_allocator
