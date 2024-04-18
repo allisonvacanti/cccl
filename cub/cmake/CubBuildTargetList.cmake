@@ -61,6 +61,8 @@ function(cub_set_target_properties target_name dialect prefix)
       PROPERTIES
         CXX_STANDARD ${dialect}
         CUDA_STANDARD ${dialect}
+        CXX_STANDARD_REQUIRED TRUE
+        CUDA_STANDARD_REQUIRED TRUE
         ARCHIVE_OUTPUT_DIRECTORY "${CUB_LIBRARY_OUTPUT_DIR}"
         LIBRARY_OUTPUT_DIRECTORY "${CUB_LIBRARY_OUTPUT_DIR}"
         RUNTIME_OUTPUT_DIRECTORY "${CUB_EXECUTABLE_OUTPUT_DIR}"
