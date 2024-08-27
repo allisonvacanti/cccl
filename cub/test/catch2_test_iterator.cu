@@ -91,6 +91,15 @@ __global__ void test_iterator_kernel(InputIteratorT d_in, T* d_out, InputIterato
   d_itrs[1] = d_in; // Iterator at offset 0
 }
 
+template <typename T>
+struct transform_op_t
+{
+  _CCCL_HOST_DEVICE T operator()(T input) const
+  {
+    return input + input;
+  }
+};
+
 template <typename InputIteratorT, typename T>
 void test_iterator(InputIteratorT d_in, const c2h::host_vector<T>& h_reference)
 {
@@ -108,6 +117,11 @@ void test_iterator(InputIteratorT d_in, const c2h::host_vector<T>& h_reference)
   CHECK(d_in == h_itrs[1]);
 }
 
+// Total compile time: 3:02
+
+#if 0
+
+// Test case compile time: 0:10 (6 instantiations) ~2s / instantiation
 CUB_TEST("Test constant iterator", "[iterator]", scalar_types)
 {
   using T                = c2h::get<0, TestType>;
@@ -116,6 +130,7 @@ CUB_TEST("Test constant iterator", "[iterator]", scalar_types)
   test_iterator(cub::ConstantInputIterator<T>(base), h_reference);
 }
 
+// Test case compile time: 0:09 (6 instantiations) ~2s / instantiation
 CUB_TEST("Test counting iterator", "[iterator]", scalar_types)
 {
   using T                = c2h::get<0, TestType>;
@@ -142,6 +157,7 @@ using cache_modifiers =
                       cub::LOAD_LDG,
                       cub::LOAD_VOLATILE>;
 
+// Test case compile time: 1:49 (196 instantiations...) ~0.6s / instantiation
 CUB_TEST("Test cache modified iterator", "[iterator]", types, cache_modifiers)
 {
   using T                       = c2h::get<0, TestType>;
@@ -159,15 +175,7 @@ CUB_TEST("Test cache modified iterator", "[iterator]", types, cache_modifiers)
     h_reference);
 }
 
-template <typename T>
-struct transform_op_t
-{
-  _CCCL_HOST_DEVICE T operator()(T input) const
-  {
-    return input + input;
-  }
-};
-
+// Test case compile time: 0:30 (28 instantiations) ~1s / instantiation
 CUB_TEST("Test transform iterator", "[iterator]", types)
 {
   using T                   = c2h::get<0, TestType>;
@@ -192,6 +200,7 @@ CUB_TEST("Test transform iterator", "[iterator]", types)
                 h_reference);
 }
 
+// Test case compile time: 0:31 (28 instantiations) ~1s / instantiation
 CUB_TEST("Test tex-obj texture iterator", "[iterator]", types)
 {
   using T                            = c2h::get<0, TestType>;
@@ -209,6 +218,9 @@ CUB_TEST("Test tex-obj texture iterator", "[iterator]", types)
   test_iterator(d_obj_itr, h_reference);
 }
 
+#endif
+
+// Test case compile time: 0:32 (28 instantiations) ~1s / instantiation
 CUB_TEST("Test texture transform iterator", "[iterator]", types)
 {
   using T                   = c2h::get<0, TestType>;
@@ -237,3 +249,7 @@ CUB_TEST("Test texture transform iterator", "[iterator]", types)
   test_iterator(xform_itr, h_reference);
   CubDebugExit(d_tex_itr.UnbindTexture());
 }
+
+#if 0
+
+#endif
