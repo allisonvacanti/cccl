@@ -618,11 +618,20 @@ endmacro()
 # Wrap the OpenMP flags for CUDA targets
 function(thrust_fixup_omp_target omp_target)
   get_target_property(opts ${omp_target} INTERFACE_COMPILE_OPTIONS)
-  if (opts MATCHES "\\$<\\$<COMPILE_LANGUAGE:CXX>:([^>]*)>")
-    target_compile_options(${omp_target} INTERFACE
-      $<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:-Xcompiler=${CMAKE_MATCH_1}>
-    )
-  endif()
+  foreach(opt IN LISTS opts)
+    # Recent versions of FindOpenMP (3.30ish?) started using `SHELL:` for some reason.
+    # This needs special handling, otherwise nvcc will get `-Xcompiler=SHELL:-fopenmp`
+    # and pass a literal `SHELL:-fopenmp` to the host compiler.
+    if (opts MATCHES "\\$<\\$<COMPILE_LANGUAGE:CXX>:SHELL:([^>]*)>")
+      target_compile_options(${omp_target} INTERFACE
+        $<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:SHELL:-Xcompiler=${CMAKE_MATCH_1}>
+      )
+    elseif(opts MATCHES "\\$<\\$<COMPILE_LANGUAGE:CXX>:([^>]*)>")
+      target_compile_options(${omp_target} INTERFACE
+        $<$<COMPILE_LANG_AND_ID:CUDA,NVIDIA>:-Xcompiler=${CMAKE_MATCH_1}>
+      )
+    endif()
+  endforeach()
 endfunction()
 
 # This must be a macro instead of a function to ensure that backends passed to
