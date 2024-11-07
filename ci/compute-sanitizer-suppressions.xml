@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ComputeSanitizerOutput>
+  <!--
+  thrust::equal reduces using an accumulator type tuple<bool, OffsetT>.
+  The padding bytes inside the tuple are not initialized.
+  This causes issues during `cub::ThreadLoad`, which loads the memory as aliased
+  machine words that are cast to the tuple type.
+  -->
+  <record>
+    <kind>Initcheck</kind>
+    <what>
+      <text>Uninitialized __global__ memory read of size 2 bytes</text>
+      <size>2</size>
+    </what>
+    <deviceStack>
+      <frame>
+        <func>UnrolledThreadLoadImpl</func>
+      </frame>
+      <frame>
+        <func>UnrolledThreadLoad</func>
+      </frame>
+      <frame>
+        <func>ThreadLoad</func>
+      </frame>
+      <frame>
+        <func>ThreadLoad</func>
+      </frame>
+      <frame>
+        <func>operator []&lt;int&gt;(T1) const</func>
+      </frame>
+      <frame>
+        <func>ConsumeTile</func>
+      </frame>
+      <frame>
+        <func>ConsumeRange</func>
+      </frame>
+      <frame>
+        <func>ConsumeRange</func>
+      </frame>
+      <frame>
+        <func>DeviceReduceSingleTileKernel</func>
+      </frame>
+    </deviceStack>
+  </record>
+</ComputeSanitizerOutput>

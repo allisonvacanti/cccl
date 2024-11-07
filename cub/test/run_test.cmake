@@ -4,12 +4,14 @@
 
 function(usage)
   message("Usage:")
-  message("  cmake -D TEST=bin/test.exe \\")
+  message("  cmake -D CCCL_SOURCE_DIR=/path/to/cccl \\")
+  message("        -D TEST=bin/test.exe \\")
   message("        -D ARGS=\"arg1;arg2;arg3\" \\")
-  message("        -D TYPE=Catch2")
+  message("        -D TYPE=Catch2 \\")
   message("        -D MODE=compute-sanitizer-memcheck \\")
   message("        -P cccl/cub/test/run_test.cmake")
   message("")
+  message("  - CCCL_SOURCE_DIR: Required.  Path to the CCCL source directory.")
   message("  - TEST: Required.  Path to the test executable.")
   message("  - ARGS: Optional.  Arguments to pass to the test executable.")
   message("  - TYPE: Optional.")
@@ -100,6 +102,7 @@ elseif (MODE MATCHES "^compute-sanitizer-(.*)$")
 
   run_command(compute-sanitizer
     --tool ${tool}
+    --suppressions "${CCCL_SOURCE_DIR}/ci/compute-sanitizer-suppressions.xml"
     # TODO Figure out what the min version needed is for this:
     # --check-bulk-copy yes
     --check-device-heap yes

@@ -193,6 +193,7 @@ function(cub_add_test target_name_var test_name test_src cub_target launcher_id)
 
       add_test(NAME ${test_target} COMMAND
         "${CMAKE_COMMAND}"
+        "-DCCCL_SOURCE_DIR=${CCCL_SOURCE_DIR}"
         "-DTEST=$<TARGET_FILE:${test_target}>"
         "-DTYPE=Catch2"
         -P "${CUB_SOURCE_DIR}/test/run_test.cmake"
@@ -220,6 +221,7 @@ function(cub_add_test target_name_var test_name test_src cub_target launcher_id)
 
         add_test(NAME ${config_c2run_target} COMMAND
           "${CMAKE_COMMAND}"
+          "-DCCCL_SOURCE_DIR=${CCCL_SOURCE_DIR}"
           "-DTEST=$<TARGET_FILE:${config_c2run_target}>"
           "-DTYPE=Catch2"
           -P "${CUB_SOURCE_DIR}/test/run_test.cmake"
@@ -316,6 +318,7 @@ function(cub_add_test target_name_var test_name test_src cub_target launcher_id)
 
       add_test(NAME ${test_target} COMMAND
         "${CMAKE_COMMAND}"
+        "-DCCCL_SOURCE_DIR=${CCCL_SOURCE_DIR}"
         "-DTEST=$<TARGET_FILE:${test_target}>"
         -P "${CUB_SOURCE_DIR}/test/run_test.cmake"
       )
