@@ -26,8 +26,9 @@
  ******************************************************************************/
 
 /**
- * @file AgentScanByKey implements a stateful abstraction of CUDA thread blocks
- *       for participating in device-wide prefix scan by key.
+ * @file
+ * AgentScanByKey implements a stateful abstraction of CUDA thread blocks
+ * for participating in device-wide prefix scan by key.
  */
 
 #pragma once

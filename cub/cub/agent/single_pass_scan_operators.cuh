@@ -602,11 +602,13 @@ struct ScanTileState<T, true>
    * done.
    *
    * @param[in] temp_storage_bytes
-   *   Size in bytes of \t d_temp_storage allocation
+   *   Size in bytes of \p d_temp_storage allocation
    */
-  _CCCL_HOST_DEVICE _CCCL_FORCEINLINE cudaError_t
-  Init(int /*num_tiles*/, void* d_temp_storage, size_t /*temp_storage_bytes*/)
+  _CCCL_HOST_DEVICE _CCCL_FORCEINLINE cudaError_t Init(int num_tiles, void* d_temp_storage, size_t temp_storage_bytes)
   {
+    (void) num_tiles;
+    (void) temp_storage_bytes;
+
     d_tile_descriptors = reinterpret_cast<TxnWord*>(d_temp_storage);
     return cudaSuccess;
   }
@@ -618,7 +620,7 @@ struct ScanTileState<T, true>
    *   Number of tiles
    *
    * @param[out] temp_storage_bytes
-   *   Size in bytes of \t d_temp_storage allocation
+   *   Size in bytes of \p d_temp_storage allocation
    */
   _CCCL_HOST_DEVICE _CCCL_FORCEINLINE static cudaError_t AllocationSize(int num_tiles, size_t& temp_storage_bytes)
   {
@@ -803,7 +805,7 @@ struct ScanTileState<T, false>
    *   done.
    *
    * @param[in] temp_storage_bytes
-   *   Size in bytes of \t d_temp_storage allocation
+   *   Size in bytes of \p d_temp_storage allocation
    */
   /// Initializer
   _CCCL_HOST_DEVICE _CCCL_FORCEINLINE cudaError_t Init(int num_tiles, void* d_temp_storage, size_t temp_storage_bytes)
@@ -847,7 +849,7 @@ struct ScanTileState<T, false>
    *   Number of tiles
    *
    * @param[out] temp_storage_bytes
-   *   Size in bytes of \t d_temp_storage allocation
+   *   Size in bytes of \p d_temp_storage allocation
    */
   _CCCL_HOST_DEVICE _CCCL_FORCEINLINE static cudaError_t AllocationSize(int num_tiles, size_t& temp_storage_bytes)
   {
@@ -1039,11 +1041,13 @@ struct ReduceByKeyScanTileState<ValueT, KeyT, true>
    *   is written to \p temp_storage_bytes and no work is done.
    *
    * @param[in] temp_storage_bytes
-   *   Size in bytes of \t d_temp_storage allocation
+   *   Size in bytes of \p d_temp_storage allocation
    */
-  _CCCL_HOST_DEVICE _CCCL_FORCEINLINE cudaError_t
-  Init(int /*num_tiles*/, void* d_temp_storage, size_t /*temp_storage_bytes*/)
+  _CCCL_HOST_DEVICE _CCCL_FORCEINLINE cudaError_t Init(int num_tiles, void* d_temp_storage, size_t temp_storage_bytes)
   {
+    (void) num_tiles;
+    (void) temp_storage_bytes;
+
     d_tile_descriptors = reinterpret_cast<TxnWord*>(d_temp_storage);
     return cudaSuccess;
   }
@@ -1055,7 +1059,7 @@ struct ReduceByKeyScanTileState<ValueT, KeyT, true>
    *   Number of tiles
    *
    * @param[out] temp_storage_bytes
-   *   Size in bytes of \t d_temp_storage allocation
+   *   Size in bytes of \p d_temp_storage allocation
    */
   _CCCL_HOST_DEVICE _CCCL_FORCEINLINE static cudaError_t AllocationSize(int num_tiles, size_t& temp_storage_bytes)
   {

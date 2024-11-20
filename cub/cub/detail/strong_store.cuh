@@ -27,7 +27,8 @@
  ******************************************************************************/
 
 /**
- * @file Utilities for strong memory operations.
+ * @file
+ * Utilities for strong memory operations.
  */
 
 #pragma once

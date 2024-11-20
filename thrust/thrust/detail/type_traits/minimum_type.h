@@ -105,11 +105,19 @@ struct minimum_type;
 
 // base case
 template <typename T1, typename T2>
-struct minimum_type<T1, T2> : minimum_type_detail::primitive_minimum_type<T1, T2>
+struct minimum_type<T1, T2>
+// Doxygen chokes on this, despite it being an excluded detail symbol:
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    : minimum_type_detail::primitive_minimum_type<T1, T2>
+#endif
 {};
 
 template <typename T1, typename T2>
-struct lazy_minimum_type : minimum_type<typename T1::type, typename T2::type>
+struct lazy_minimum_type
+// Doxygen chokes on this, despite it being an excluded detail symbol:
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    : minimum_type<typename T1::type, typename T2::type>
+#endif
 {};
 
 // carefully avoid referring to a nested ::type which may not exist

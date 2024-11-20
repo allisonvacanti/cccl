@@ -49,7 +49,11 @@ template <typename T1,
           typename T14 = minimum_type_detail::any_conversion,
           typename T15 = minimum_type_detail::any_conversion,
           typename T16 = minimum_type_detail::any_conversion>
-struct minimum_category : minimum_type<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
+struct minimum_category
+// Doxygen chokes on this, despite it being an excluded detail symbol:
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+    : minimum_type<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16>
+#endif // DOXYGEN_SHOULD_SKIP_THIS
 {}; // end minimum_category
 
 } // namespace detail

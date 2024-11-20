@@ -27,8 +27,9 @@
  ******************************************************************************/
 
 /**
- * @file cub::DeviceReduceByKey provides device-wide, parallel operations for
- *       reducing segments of values residing within device-accessible memory.
+ * @file
+ * cub::DeviceReduceByKey provides device-wide, parallel operations for
+ * reducing segments of values residing within device-accessible memory.
  */
 
 #pragma once

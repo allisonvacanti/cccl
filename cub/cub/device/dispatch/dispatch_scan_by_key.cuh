@@ -26,9 +26,10 @@
  ******************************************************************************/
 
 /**
- * @file DeviceScan provides device-wide, parallel operations for computing a
- *       prefix scan across a sequence of data items residing within
- *       device-accessible memory.
+ * @file
+ * DeviceScan provides device-wide, parallel operations for computing a
+ * prefix scan across a sequence of data items residing within
+ * device-accessible memory.
  */
 
 #pragma once

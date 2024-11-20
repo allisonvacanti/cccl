@@ -27,8 +27,9 @@
  ******************************************************************************/
 
 /**
- * @file cub::AgentScan implements a stateful abstraction of CUDA thread blocks
- *       for participating in device-wide prefix scan .
+ * @file
+ * cub::AgentScan implements a stateful abstraction of CUDA thread blocks
+ * for participating in device-wide prefix scan .
  */
 
 #pragma once

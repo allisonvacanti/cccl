@@ -27,8 +27,9 @@
  ******************************************************************************/
 
 /**
- * @file cub::AgentReduceByKey implements a stateful abstraction of CUDA thread
- *       blocks for participating in device-wide reduce-value-by-key.
+ * @file
+ * cub::AgentReduceByKey implements a stateful abstraction of CUDA thread
+ * blocks for participating in device-wide reduce-value-by-key.
  */
 
 #pragma once

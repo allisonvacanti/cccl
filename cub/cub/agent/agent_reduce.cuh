@@ -27,8 +27,9 @@
  ******************************************************************************/
 
 /**
- * @file cub::AgentReduce implements a stateful abstraction of CUDA thread
- *       blocks for participating in device-wide reduction.
+ * @file
+ * cub::AgentReduce implements a stateful abstraction of CUDA thread
+ * blocks for participating in device-wide reduction.
  */
 
 #pragma once
