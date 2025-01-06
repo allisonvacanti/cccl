@@ -2,12 +2,12 @@
 
 set -euo pipefail
 
-readonly script_path=$(cd $(dirname ${0}); pwd -P)
+readonly docs_source_path=$(cd $(dirname ${0}); pwd -P)
 readonly docs_build_path=../build/docs
 readonly image_path=${docs_build_path}/img
 readonly cub_docs_repo=${docs_build_path}/cubimg
 
-cd ${script_path}
+cd ${docs_source_path}
 
 # Install prerequisites
 # sudo apt update
@@ -43,16 +43,26 @@ fi
 
 
 # Generate doxygen xml output for sphinx/breathe:
-run_doxygen() {
+process_project() {
     local project=$1
     local project_dir="${docs_build_path}/${project}"
+    local xml_dir="${project_dir}/doxygen/xml"
+    local api_dir="${docs_source_path}/${project}/api"
     echo "Generating doxygen xml for ${project}"
-    mkdir -p "${project_dir}/doxygen/xml"
-    doxygen doxyfiles/${project}.conf | tee "${project_dir}/doxygen/log.txt
+    mkdir -p "${xml_dir}"
+    doxygen doxyfiles/${project}.conf | tee "${project_dir}/doxygen/log.txt"
+    rm -rf ${api_dir}
+    breathe-apidoc \
+      "${xml_dir}" \
+      --members \
+      --force \
+      --generate class,struct,union,group \
+      --output-dir "${api_dir}" \
+      --project ${project}
 }
 
-run_doxygen cub
-run_doxygen cudax
-run_doxygen thrust
+process_project cub
+process_project cudax
+process_project thrust
 
 sphinx-build -M html . "${docs_build_path}/sphinx" | tee "${docs_build_path}/sphinx/log.txt"
